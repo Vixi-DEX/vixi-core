@@ -278,6 +278,19 @@ func calculateQuoteQuantity(baseQuantity uint64, pair TradingPair, side TradeSid
     return quoteQuantity, price, nil
 }
 
+func LogRequests(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        log.Printf(
+            "[%s] %s %s %s",
+            r.Method,
+            r.Host,
+            r.URL.Path,
+            r.URL.RawQuery,
+        )
+        next.ServeHTTP(w, r)
+    })
+}
+
 func runserver() {
     var err error
     algodClient, err = algod.MakeClient(config.AlgodUrl, config.AlgodToken)
@@ -287,9 +300,14 @@ func runserver() {
     }
 
     router := mux.NewRouter()
+    router.Use(LogRequests)
     router.HandleFunc("/quote", quote).Methods("GET")
     router.HandleFunc("/pairs", getpairsroute).Methods("GET")
     router.HandleFunc("/mm/setbidask", setbidaskroute).Methods("POST")
     router.HandleFunc("/mm/orderbook", getorderbookroute).Methods("GET")
-    http.ListenAndServe(config.ServerUrl, router)
+    err = http.ListenAndServe(config.ServerUrl, router)
+    if err != nil {
+        log.Fatal(err)
+        return
+    }
 }

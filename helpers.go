@@ -12,12 +12,31 @@ import (
 
 func LoadConfig() (err error) {
     fileBytes, err := ioutil.ReadFile("config.yaml")
-    if err != nil {
-        return errors.New("Could not read config.yaml")
+    if err == nil { // If the file exists
+        err = yaml.Unmarshal(fileBytes, &config)
+        if err != nil {
+            return errors.New("Error parsing config.yaml")
+        }
     }
-    err = yaml.Unmarshal(fileBytes, &config)
+    // Defaults
+    if config.ServerUrl == "" {
+        config.ServerUrl = "localhost:8082"
+    }
+    if config.AlgodUrl == "" {
+        config.AlgodUrl = "https://algoexplorerapi.io"
+    }
+    accounts, err := GetWalletAccounts()
     if err != nil {
-        return errors.New("Error parsing config.yaml")
+        return err
+    }
+    if len(accounts) == 0 {
+        return errors.New("You must either create or import a key before using VIXI")
+    }
+    if config.MMAddress == "" {
+        config.MMAddress = accounts[0].Address.String()
+    }
+    if config.ClientAddress == "" {
+        config.ClientAddress = accounts[0].Address.String()
     }
     return nil
 }
@@ -53,4 +72,24 @@ func GetWalletAccount(addressString string) (account crypto.Account, err error) 
     }
     return account, errors.New("Address not found in wallet")
 
+}
+
+func GetWalletAccounts() (accounts []crypto.Account, err error) {
+    fileBytes, err := ioutil.ReadFile("wallet.dat")
+    if err != nil {
+        return accounts, errors.New("Could not read wallet.dat")
+    }
+    lines := bytes.Split(fileBytes, []byte("\n"))
+    for _, line := range lines {
+        if len(line) == 0 {
+            continue
+        }
+        var account crypto.Account
+        err = msgpack.Decode(line, &account)
+        if err != nil {
+            return accounts, errors.New("Wallet file is corrupted")
+        }
+        accounts = append(accounts, account)
+    }
+    return accounts, nil
 }

@@ -407,18 +407,12 @@ func main() {
     }
 
     if command == "wallet" && subcommand == "list" {
-        fileBytes, err := ioutil.ReadFile("wallet.dat")
-        lines := bytes.Split(fileBytes, []byte("\n"))
-        for _, line := range lines {
-            if len(line) == 0 {
-                continue
-            }
-            var account crypto.Account
-            err = msgpack.Decode(line, &account)
-            if err != nil {
-                log.Println("Wallet file is corrupted")
-                return
-            }
+        accounts, err := GetWalletAccounts()
+        if err != nil {
+            log.Println(err)
+            return
+        }
+        for _, account := range accounts {
             fmt.Println(account.Address)
         }
         return

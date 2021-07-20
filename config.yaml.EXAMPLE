@@ -1,0 +1,17 @@
+# Format     host:port
+# Do not specify a protocol (http, https)
+server_url: "localhost:8082"
+
+# Algorand V2 API URL
+algod_url: "https://algoexplorerapi.io"
+
+# RPC Access Token for permissioned Algorand API
+# algod_token: myalgodtoken
+
+# Defaults to first available address in wallet
+# To use a different address, specify it here
+# mm_address: C7RYOGEWDT7HZM3HKPSMU7QGWTRWR3EPOQTJ2OHXGYLARD3X62DNWELS34
+
+# Defaults to first available address in wallet
+# To use a different address, specify it here
+# client_address: NRDDQ7MFRTUTMDAP4CBXDQ2IVP5VSLKDASADLLANYLFIKR7NQOGOUINYM4
