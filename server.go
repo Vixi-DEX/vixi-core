@@ -292,6 +292,9 @@ func LogRequests(next http.Handler) http.Handler {
 }
 
 func runserver() {
+    log.Println("Using data directory", config.Datadir)
+    log.Println("Using MM address", config.MMAddress)
+    log.Println("Using Algorand V2 API", config.AlgodUrl)
     var err error
     algodClient, err = algod.MakeClient(config.AlgodUrl, config.AlgodToken)
     if err != nil {

@@ -139,8 +139,14 @@ func main() {
     }
     subcommand := os.Args[2]
 
+    // TODO: Allow custom config file paths
+    homedir, err := os.UserHomeDir()
+    if err != nil {
+        log.Println(err)
+        return
+    }
     loadWallet := (command != "wallet")
-    err := LoadConfig(loadWallet)
+    err = LoadConfig(homedir + "/.vixi/config.yaml", loadWallet)
     if err != nil {
         fmt.Println(err)
         return

@@ -11,8 +11,8 @@ import (
     "os"
 )
 
-func LoadConfig(loadWallet bool) (err error) {
-    fileBytes, err := ioutil.ReadFile("config.yaml")
+func LoadConfig(configFile string, loadWallet bool) (err error) {
+    fileBytes, err := ioutil.ReadFile(configFile)
     if err == nil { // If the file exists
         err = yaml.Unmarshal(fileBytes, &config)
         if err != nil {
