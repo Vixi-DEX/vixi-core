@@ -1,11 +1,17 @@
+# For market making, bind the HTTP server to the following network address
+# Specify 0.0.0.0 for the host to listen on all IPs
 # Format     host:port
 # Do not specify a protocol (http, https)
 server_url: "localhost:8082"
 
 # Algorand V2 API URL
+# The default Algorand API can be a bit slow
+# Market makers are recommended to run their own Algorand node
+# Running your own Algorand node can give a 10x speed up in quote generation
+# A light Algorand node is sufficient and requires ~10 GB of disk space
 algod_url: "https://algoexplorerapi.io"
 
-# RPC Access Token for permissioned Algorand API
+# RPC Access Token for Algorand API
 # algod_token: myalgodtoken
 
 # Defaults to first available address in wallet
@@ -15,3 +21,6 @@ algod_url: "https://algoexplorerapi.io"
 # Defaults to first available address in wallet
 # To use a different address, specify it here
 # client_address: NRDDQ7MFRTUTMDAP4CBXDQ2IVP5VSLKDASADLLANYLFIKR7NQOGOUINYM4
+#
+# Location to store wallet file and other data
+datadir: ~/.vixi

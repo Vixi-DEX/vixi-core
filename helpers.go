@@ -8,9 +8,10 @@ import (
     "bytes"
     "github.com/algorand/go-algorand-sdk/encoding/msgpack"
     "github.com/algorand/go-algorand-sdk/types"
+    "os"
 )
 
-func LoadConfig() (err error) {
+func LoadConfig(loadWallet bool) (err error) {
     fileBytes, err := ioutil.ReadFile("config.yaml")
     if err == nil { // If the file exists
         err = yaml.Unmarshal(fileBytes, &config)
@@ -25,18 +26,34 @@ func LoadConfig() (err error) {
     if config.AlgodUrl == "" {
         config.AlgodUrl = "https://algoexplorerapi.io"
     }
-    accounts, err := GetWalletAccounts()
+    if config.Datadir == "" {
+        homedir, err := os.UserHomeDir()
+        if err != nil {
+            return err
+        }
+        config.Datadir = homedir + "/.vixi"
+    }
+
+    // Create data directory
+    err = os.Mkdir(config.Datadir, 0755)
     if err != nil {
-        return err
+        // ignore the error, the directory already exists
     }
-    if len(accounts) == 0 {
-        return errors.New("You must either create or import a key before using VIXI")
-    }
-    if config.MMAddress == "" {
-        config.MMAddress = accounts[0].Address.String()
-    }
-    if config.ClientAddress == "" {
-        config.ClientAddress = accounts[0].Address.String()
+
+    if loadWallet {
+        accounts, err := GetWalletAccounts()
+        if err != nil {
+            return err
+        }
+        if len(accounts) == 0 {
+            return errors.New("No accounts found. Import or create a key to continue. See ./vixi wallet")
+        }
+        if config.MMAddress == "" {
+            config.MMAddress = accounts[0].Address.String()
+        }
+        if config.ClientAddress == "" {
+            config.ClientAddress = accounts[0].Address.String()
+        }
     }
     return nil
 }
@@ -55,7 +72,10 @@ func GetWalletAccount(addressString string) (account crypto.Account, err error) 
     if err != nil {
         return account, errors.New("Invalid Address")
     }
-    fileBytes, err := ioutil.ReadFile("wallet.dat")
+    fileBytes, err := ioutil.ReadFile(config.Datadir + "/wallet.dat")
+    if err != nil {
+        return account, errors.New("Wallet doesn't exist. Import or create a key to continue. See ./vixi wallet")
+    }
     lines := bytes.Split(fileBytes, []byte("\n"))
     for _, line := range lines {
         if len(line) == 0 {
@@ -75,9 +95,9 @@ func GetWalletAccount(addressString string) (account crypto.Account, err error) 
 }
 
 func GetWalletAccounts() (accounts []crypto.Account, err error) {
-    fileBytes, err := ioutil.ReadFile("wallet.dat")
+    fileBytes, err := ioutil.ReadFile(config.Datadir + "/wallet.dat")
     if err != nil {
-        return accounts, errors.New("Could not read wallet.dat")
+        return accounts, errors.New("Wallet doesn't exist. Import or create a key to continue. See ./vixi wallet")
     }
     lines := bytes.Split(fileBytes, []byte("\n"))
     for _, line := range lines {

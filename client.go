@@ -139,7 +139,8 @@ func main() {
     }
     subcommand := os.Args[2]
 
-    err := LoadConfig()
+    loadWallet := (command != "wallet")
+    err := LoadConfig(loadWallet)
     if err != nil {
         fmt.Println(err)
         return
@@ -173,7 +174,7 @@ func main() {
             return
         }
         msgpackQuote := msgpack.Encode(quote)
-        err = ioutil.WriteFile("latest.quote", msgpackQuote, 0666)
+        err = ioutil.WriteFile(config.Datadir + "/latest.quote", msgpackQuote, 0666)
         if err != nil {
             fmt.Println("Error writing quote to disk")
             log.Print(err)
@@ -206,7 +207,7 @@ func main() {
     }
 
     if command == "quote" && subcommand == "accept" {
-        fileBytes, err := ioutil.ReadFile("latest.quote")
+        fileBytes, err := ioutil.ReadFile(config.Datadir + "/latest.quote")
         if err != nil {
             log.Print("Error reading quote from disk")
             log.Print(err)
@@ -381,7 +382,7 @@ func main() {
         keypair := crypto.GenerateAccount()
         keypairMsgpack := msgpack.Encode(keypair)
         keypairMsgpack = append(keypairMsgpack, '\n')
-        f, err := os.OpenFile("wallet.dat", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+        f, err := os.OpenFile(config.Datadir + "/wallet.dat", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
             log.Println(err)
             return
@@ -441,7 +442,7 @@ func main() {
         var keypair crypto.Account = crypto.Account{pubkey,privkey,address}
         keypairMsgpack := msgpack.Encode(keypair)
         keypairMsgpack = append(keypairMsgpack, '\n')
-        f, err := os.OpenFile("wallet.dat", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+        f, err := os.OpenFile(config.Datadir + "/wallet.dat", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
             log.Println(err)
         }

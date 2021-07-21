@@ -87,6 +87,7 @@ type ConfigVars struct {
     AlgodToken string `yaml:"algod_token"`
     MMAddress string `yaml:"mm_address"`
     ClientAddress string `yaml:"client_address"`
+    Datadir string `yaml:"datadir"`
 }
 var config ConfigVars
 

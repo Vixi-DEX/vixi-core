@@ -9,6 +9,46 @@ go get
 go build
 ```
 
+# Wallet Setup
+
+Before you can use the VIXI DEX, you will have to import or create a new keypair. 
+Attempting to use the DEX without a keypair will result in the following error.
+
+```
+$ ./vixi quote get USDC-BRZ Buy 1
+Wallet doesn't exist. Import or create a key to continue. See ./vixi wallet
+```
+
+Import a keypair
+
+```
+$ ./vixi wallet import
+Enter mnemonic: 
+```
+
+Or create a new one
+
+```
+$ ./vixi wallet new
+Don't forget to backup your mnemonic! Each address has a unique mnemonic
+
+Address: TCKNML4BPALCWNR7L32F2PTGYODDSKDBUGMKH5NUYLH3YBMIIGYZKYMDAE
+Mnemonic: gallery stove purpose arm element multiply clinic army giant priority must half mix provide edge shiver cliff moral antique pear federal adjust piano able catalog
+```
+
+# Configuration
+
+The default configurations shipped with VIXI are sufficient to get started. 
+If you wish to customize your software, copy the `config.yaml.EXAMPLE` file into `config.yaml` and make your edits there. 
+
+```
+cp config.yaml.EXAMPLE config.yaml
+```
+
+Market makers in particular should look into the `algod_url` and `algod_token` settings to run their own Algorand node.
+
+See the (config.yaml.EXAMPLE)[config.yaml.EXAMPLE] file for a full explanation of each setting
+
 # Commands
 
 You can view the list of available commands and help text by running the base executable with no arguments
