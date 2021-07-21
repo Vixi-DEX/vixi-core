@@ -45,9 +45,9 @@ If you wish to customize your software, copy the `config.yaml.EXAMPLE` file into
 cp config.yaml.EXAMPLE config.yaml
 ```
 
-Market makers in particular should look into the `algod_url` and `algod_token` settings to run their own Algorand node.
+Market makers in particular should look into the `algod_url` and `algod_token` settings to hook up their own Algorand participation node.
 
-See the (config.yaml.EXAMPLE)[config.yaml.EXAMPLE] file for a full explanation of each setting
+See the [config.yaml.EXAMPLE](config.yaml.EXAMPLE) file for a full explanation of each setting
 
 # Commands
 
