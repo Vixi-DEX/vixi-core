@@ -5,7 +5,6 @@ VIXI Core is the core protocol client for the VIXI DEX.
 # Installation
 
 ```
-go get
 go build
 ```
 
