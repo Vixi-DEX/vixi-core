@@ -93,4 +93,4 @@ var config ConfigVars
 
 const ALGORAND_FEE_ADDRESS string = "LJ3G2M3UELFQJSHINTIRLLN3PCB6MXBCGRLQRVHYPWLDVAMJT4R4UK63JE"
 const PROTOCOL_FEE_BIPS uint8 = 3
-const BOOTSTRAP_MM_URL string = "http://localhost:8082"
+const BOOTSTRAP_MM_URL string = "http://18.231.186.3:8082"

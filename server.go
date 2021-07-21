@@ -1,6 +1,7 @@
 package main
 
 import (
+    "time"
     "math"
     "fmt"
     "net/http"
@@ -241,7 +242,11 @@ func getTradingPair(baseAssetId string, quoteAssetId string) (pair *TradingPair,
 }
 
 func createPaymentTxn(assetId string, fromAddress string, toAddress string, quantity uint64, note []byte) (txn types.Transaction, err error) {
-    txParams, _ := algodClient.SuggestedParams().Do(context.Background())
+    txParams, err := algodClient.SuggestedParams().Do(context.Background())
+    if err != nil {
+        log.Print(err)
+        return txn, errors.New("Could not obtain required transaction params")
+    }
     if assetId == "algorand" {
         txn, err = future.MakePaymentTxn(fromAddress, toAddress, quantity, note, "", txParams)
     } else {
@@ -308,7 +313,13 @@ func runserver() {
     router.HandleFunc("/pairs", getpairsroute).Methods("GET")
     router.HandleFunc("/mm/setbidask", setbidaskroute).Methods("POST")
     router.HandleFunc("/mm/orderbook", getorderbookroute).Methods("GET")
-    err = http.ListenAndServe(config.ServerUrl, router)
+    srv := &http.Server{
+        Addr: config.ServerUrl,
+        Handler: router,
+        ReadTimeout: 5 * time.Second,
+        WriteTimeout: 10 * time.Second,
+    }
+    err = srv.ListenAndServe()
     if err != nil {
         log.Fatal(err)
         return
