@@ -39,10 +39,10 @@ Mnemonic: gallery stove purpose arm element multiply clinic army giant priority 
 # Configuration
 
 The default configurations shipped with VIXI are sufficient to get started. 
-If you wish to customize your software, copy the `config.yaml.EXAMPLE` file into `config.yaml` and make your edits there. 
+If you wish to customize your software, copy the `config.yaml.EXAMPLE` file into your data directory and make your edits there. 
 
 ```
-cp config.yaml.EXAMPLE config.yaml
+cp config.yaml.EXAMPLE ~/.vixi/config.yaml
 ```
 
 Market makers in particular should look into the `algod_url` and `algod_token` settings to hook up their own Algorand participation node.
