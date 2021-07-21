@@ -9,6 +9,7 @@ import (
     "github.com/algorand/go-algorand-sdk/encoding/msgpack"
     "github.com/algorand/go-algorand-sdk/types"
     "os"
+    "log"
 )
 
 func LoadConfig(configFile string, loadWallet bool) (err error) {
@@ -32,6 +33,14 @@ func LoadConfig(configFile string, loadWallet bool) (err error) {
             return err
         }
         config.Datadir = homedir + "/.vixi"
+    }
+    // Go doesn't support the ~, so replace it with the homedir
+    if config.Datadir[0] == '~' {
+        homedir, err := os.UserHomeDir()
+        if err != nil {
+            return err
+        }
+        config.Datadir = homedir + config.Datadir[1:]
     }
 
     // Create data directory
@@ -97,6 +106,7 @@ func GetWalletAccount(addressString string) (account crypto.Account, err error) 
 func GetWalletAccounts() (accounts []crypto.Account, err error) {
     fileBytes, err := ioutil.ReadFile(config.Datadir + "/wallet.dat")
     if err != nil {
+        log.Println(err)
         return accounts, errors.New("Wallet doesn't exist. Import or create a key to continue. See ./vixi wallet")
     }
     lines := bytes.Split(fileBytes, []byte("\n"))
