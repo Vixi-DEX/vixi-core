@@ -58,7 +58,7 @@ var SUPPORTED_ASSETS []Asset = []Asset{ Asset{"algorand", "ALGO", "algorand", 6 
                                         Asset{"algorand_31566704", "USDC", "algorand", 6},
                                         Asset{"algorand_312769", "USDT", "algorand", 6},
                                         Asset{"algorand_112866019", "BRZ", "algorand", 4},
-                                        Asset{"algorand_283867985", "VIXI", "algorand", 6} }
+                                        Asset{"algorand_283903173", "VIXI", "algorand", 6} }
 
 var SUPPORTED_PAIRS []TradingPair = []TradingPair{ TradingPair{"ALGO-USDC", SUPPORTED_ASSETS[0], SUPPORTED_ASSETS[1], 4, OrderBook{} },
                                                    TradingPair{"ALGO-USDT", SUPPORTED_ASSETS[0], SUPPORTED_ASSETS[2], 4, OrderBook{} },
