@@ -84,6 +84,8 @@ func DisplayHelpText(command string) {
     if command == "" {
         fmt.Println("VIXI is an atomic swap DEX on Algorand")
         fmt.Println("")
+        fmt.Println("HELP: ./vixi [COMMAND]")
+        fmt.Println("")
         fmt.Println("Available Commands:")
         fmt.Println("  wallet   Create and manage Algorand accounts")
         fmt.Println("  quote    Get, view, and trade RFQ-style quotes")
@@ -93,6 +95,8 @@ func DisplayHelpText(command string) {
 
     if command == "wallet" {
         fmt.Println("Create and manage Algorand accounts")
+        fmt.Println("")
+        fmt.Println("HELP: ./vixi wallet [COMMAND]")
         fmt.Println("")
         fmt.Println("Available Commands:")
         fmt.Println("  new      Create a new keypair")
@@ -104,6 +108,8 @@ func DisplayHelpText(command string) {
     if command == "quote" {
         fmt.Println("Get, view, and trade RFQ-style quotes")
         fmt.Println("")
+        fmt.Println("HELP: ./vixi quote [COMMAND]")
+        fmt.Println("")
         fmt.Println("Available Commands:")
         fmt.Println("  pairs    View available trading pairs")
         fmt.Println("  get      Get a tradeable quote")
@@ -113,6 +119,8 @@ func DisplayHelpText(command string) {
 
     if command == "mm" {
         fmt.Println("Market making management")
+        fmt.Println("")
+        fmt.Println("HELP: ./vixi mm [COMMAND]")
         fmt.Println("")
         fmt.Println("Available Commands:")
         fmt.Println("  start       Start the market making daemon")
@@ -462,6 +470,6 @@ func main() {
     }
 
     // Default
-    DisplayHelpText("")
+    DisplayHelpText(command)
     return
 }
